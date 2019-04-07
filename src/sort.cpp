@@ -101,7 +101,8 @@ void merge_sort_inner(T* list, size_t x, size_t y) {
     if ( y <= x) return; // Deal with error case x>y 
     size_t array_length = y-x+1;
     size_t mid = x + array_length/2;
-    merge_sort_inner(list,x,mid-1);
+    if (mid > 0) //be careful of overflows
+        merge_sort_inner(list,x,mid-1);
     merge_sort_inner(list,mid,y);
     T* sorted = new T[array_length];
     merge_sorted_arrays(list+x,mid-x,list+mid,y-mid+1,sorted);
@@ -131,7 +132,8 @@ void quick_sort_inner(T* list, size_t x, size_t y) {
         swap_vals(list[firsthigh],list[p]);
     }
 
-    quick_sort_inner(list,x,firsthigh-1);
+    if (firsthigh > 0) // be careful about overflows
+        quick_sort_inner(list,x,firsthigh-1);
     quick_sort_inner(list,firsthigh+1,y);
 }
 
@@ -181,14 +183,16 @@ void test_sorts(){
     for (int i = 0; i < N; i++)
         list[i] = rand()%1024;
 
-    /*cout << "Heap Sort" << endl;
+    cout << "Heap Sort" << endl;
     run_sort(list,N,&heap_sort);
     cout << "Insertion Sort" << endl;
     run_sort(list,N,&insertion_sort);
+    cout << "Bubble Sort" << endl;
+    run_sort(list,N,&bubble_sort);
     cout << "Selection Sort" << endl;
-    run_sort(list,N,&selction_sort);
+    run_sort(list,N,&selection_sort);
     cout << "Merge Sort" << endl;
-    run_sort(list,N,&merge_sort);*/
+    run_sort(list,N,&merge_sort);
     cout << "Quick Sort" << endl;
     run_sort(list,N,&quick_sort);
 
