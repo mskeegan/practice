@@ -50,17 +50,21 @@ template <typename T>
 T Heap<T>::get_top() {
     T top = heap[0];
     nElements--;
-    heap[0] = heap[nElements];
-    percolate_down(0);
+    if (!is_empty()) {
+        heap[0] = heap[nElements];
+        percolate_down(0);
+    }
     return top;
 }
 
 template <typename T>
 void Heap<T>::percolate_down(size_t n) {
+    if (nElements <= 1) return;
     size_t child_left = n*2+1;
-    if (child_left > nElements-1) return; 
+    size_t end_of_array = nElements-1;
+    if (child_left > end_of_array) return; 
     size_t child_right = n*2+2;
-    bool has_right_child = child_right <= nElements-1;
+    bool has_right_child = child_right <= end_of_array;
     if (!has_right_child || heap[child_left] < heap[child_right]){
         if (heap[child_left] < heap[n]){
             T tmp = heap[child_left];
